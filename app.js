@@ -51,20 +51,20 @@ app.get('/reg.ejs',(req,res) => {
     })
 })
 
-// 用户登陆
 //用户登陆
-app.post('/LoginAction',(req, res,next)=>{
+app.post('/LoginAction',(req, res)=>{
     var username = req.body.username;
     var password = req.body.password;
-    console.log(req.body)
     Mongoose.User.findOne({"username": username, "password": password}).exec((err, user) => {
         if(err) return console.log(err)
         if(!user) res.render("login.ejs", {
             info: "用户名或密码错误",
-            user: null
+            username: null
         })
         else {
-            res.send("登陆成功!")
+            res.render("admin.ejs",{
+                username:user.username
+            })
         }
     })
     
@@ -72,13 +72,34 @@ app.post('/LoginAction',(req, res,next)=>{
 
 // 学生注册
 app.post('/RegAction',(req,res) =>{
-    res.render('login.ejs',{
-        username:null,
-        info:"登陆成功,请登录！"
+    var name = req.body.name;
+    var username = req.body.username;
+    var password = req.body.password;
+    var sex = req.body.sex;
+    var major = req.body.major;
+    Mongoose.User.findOne({"username":username}).exec((err,user) =>{
+        if(!user){
+            Mongoose.addUser(name, username, password, sex, major, 0, 0, 0, 1)
+            res.render("login.ejs", {
+                username:null,
+                info: "注册成功！"
+            })
+            return next();
+        }else{
+            res.render("reg.ejs", {
+                username:null,
+                info: "该用户名已被注册！"
+            })
+        }
+        
     })
+
 })
 
-
+//管理员首页
+app.get('/admin.ejs',(req,res)=>{
+    res.render('admin.ejs')
+})
 
 
 

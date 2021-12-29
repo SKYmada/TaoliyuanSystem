@@ -7,7 +7,6 @@ const UserSchema = {
 	password:String,
 	sex:String,
 	major:String,
-	reg_time:Date,
 	role_id:Number,
 	lou_id:Number,
 	room_id:Number,
