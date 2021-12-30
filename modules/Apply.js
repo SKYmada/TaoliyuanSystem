@@ -16,7 +16,7 @@ const ApplySchema = {
 	apply_room_id:String,
 	status:{
 		type:Number,
-		default:1,
+		default:0,
 	}
 }
 

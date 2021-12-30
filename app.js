@@ -1,6 +1,7 @@
 const express = require('express');
 const Mongoose = require('./modules/mongoose.js');
 const bodyParser = require('body-parser')
+const sd = require('silly-datetime');  //获取格式化日期
 const session = require('express-session');  //保存用户信息
 const ejs = require('ejs');
 const { ConnectionStates } = require('mongoose');
@@ -323,9 +324,39 @@ app.get('/student_apply.ejs',(req,res)=>{
 app.post('/doApply',(req,res)=>{
     // res.send(req.body)
     //获取数据
+    var applyer = req.session.username;
     var lou = req.body.apply_lou;
     var room = req.body.apply_room;
-    
+    var apply_time = sd.format(new Date(),"YYYY年MM月DD日 HH时mm分ss秒");
+    //检查获取的数据
+    // console.log(typeof(applyer));
+    // console.log(typeof(lou));
+    // console.log(typeof(room));
+    // console.log(typeof(apply_time));
+    Mongoose.ApplyModel.findOne({"applicant":applyer},(err,datas) =>{
+        if(datas){ //已有申请
+            Mongoose.LouModel.find({},(err,data) =>{ //获取楼号供选择
+                // console.log(data[0]);
+                res.render('student_apply.ejs',{
+                    username:req.session.username,
+                    loulist:data,
+                    info:"你已提交申请，请勿重复提交！！",
+                })
+            }) 
+        }
+        else{ //未曾申请则写入
+            Mongoose.addApply(applyer,apply_time,lou,room);
+            Mongoose.LouModel.find({},(err,data) =>{ //获取楼号供选择
+                // console.log(data[0]);
+                res.render('student_apply.ejs',{
+                    username:req.session.username,
+                    loulist:data,
+                    info:"申请已提交，请耐心等待管理员处理！！",
+                })
+            })
+        }
+    })
+
 })
 
 
