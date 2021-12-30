@@ -147,6 +147,9 @@ app.post('/RegAction',(req,res) =>{
 
 })
 
+
+//--------------管理员操作-----------------------
+
 //管理员首页
 app.get('/admin.ejs',(req,res)=>{
     res.render("admin.ejs",{
@@ -289,10 +292,23 @@ app.get('/InvalidUser',(req,res) =>{
     })  
 })
 
+// 学生申请列表
+app.get('/list_apply.ejs',(req,res) =>{
+    Mongoose.ApplyModel.find({},(err,datas)=>{
+        if(err) return console.log(err);
+        res.render('list_apply.ejs',{
+            username:req.session.username,
+            applylist:datas
+        })
+    })
+})
+//处理申请
 
 
 
 
+
+//-----------------学生操作---------------------------
 
 
 //学生首页
@@ -327,7 +343,7 @@ app.post('/doApply',(req,res)=>{
     var applyer = req.session.username;
     var lou = req.body.apply_lou;
     var room = req.body.apply_room;
-    var apply_time = sd.format(new Date(),"YYYY年MM月DD日 HH时mm分ss秒");
+    var apply_time = sd.format(new Date(),"YYYY年MM月DD日");
     //检查获取的数据
     // console.log(typeof(applyer));
     // console.log(typeof(lou));

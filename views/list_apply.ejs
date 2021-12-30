@@ -1,0 +1,78 @@
+
+<!DOCTYPE html>
+
+<html>
+
+<head>
+<!-- bootstrap美化包 -->
+	<%-include('bt.ejs')%>
+</head>
+<body class="text-center"
+	style="background: url(photo/back1.jpg); background-size: 100% 100%; background-repeat: no-repeat; background-attachment: fixed">
+
+
+	<div class="container">
+		<!-- 导航栏 -->
+         <%-include('nav.ejs')%>
+
+		<div class="row" style="margin-top: 10px">
+
+			<!-- 当前左边栏显示active -->
+		<%-include("admin_left.ejs") %>	
+
+        <div class="col-lg-9">
+            <div class="card bg-dark text-black">
+
+                <!-- 列表 -->
+                <table class="table text-white">
+                    <thead>
+                        <tr>
+                            <th scope="col">序号</th>
+                            <th scope="col">申请人姓名</th>
+                            <th scope="col">申请时间</th>
+                            <th scope="col">申请寝室楼号</th>
+                            <th scope="col">申请寝室号</th>
+                            <th scope="col">状态</th>
+                            <th scope="col">操作</th>
+                        </tr>
+                    </thead>
+                    <tbody class="text-white">
+
+                        <% for(var i = 0; i < applylist.length; i++) { %>
+                            <tr>
+                                <td> <%-i+1 %> </td>
+                                <td> <%- applylist[i].applicant %> </td>
+                                <td> <%- applylist[i].apply_time %> </td>
+                                <td> <%- applylist[i].apply_lou_id %> </td>
+                                <td> <%- applylist[i].apply_room_id %> </td>
+
+                                <td>   
+                                    <button type="button" class="btn btn-<%- applylist[i].status=='0'?'danger':'primary'%>"><%- applylist[i].status=='0'?'未处理':'已处理' %></button>
+                                </td>
+
+
+                                <td>
+                                    <button type="button" class="btn btn-success">同意</button>
+                                    <button type="button" class="btn btn-danger">拒绝</button>
+                                </td>
+
+
+
+                            </tr>
+                        <% } %>
+                    </tbody>
+
+
+                </table>
+            </div>
+        </div>
+
+
+
+		</div>
+	</div>
+</body>
+
+</html>
+
+
