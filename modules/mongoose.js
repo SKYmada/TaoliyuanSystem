@@ -1,5 +1,6 @@
 const UserModel = require("./User")
 const LouModel = require("./Lou")
+const ApplyModel = require("./Apply")
 
 //在users表中插入数据
 function addUser(name, username, password, sex,major,role_id, lou_id, room_id,status) {
@@ -35,6 +36,21 @@ function addLou(lou_id, name, build_time, remake) {
 }
 
 
+//提交申请
+function addApply(applicant,apply_time,apply_lou_id,apply_room_id){
+    var apply = new ApplyModel({
+        applicant:applicant,
+        apply_time:apply_time,
+        apply_lou_id:apply_lou_id,
+        apply_room_id:apply_room_id,
+    })
+    apply.save((err) => {
+        if(err) return console.log(err)
+        console.log("插入apply成功")
+    })
+}
+
+
 //修改密码
 function changePwd(username, password) {
     UserModel.updateOne({"username":username},{"password":password},(err) => {
@@ -65,4 +81,4 @@ function RestroUser(username){
 
 }
 
-module.exports = {UserModel,LouModel,addUser,addLou,changePwd,RestroUser,InvalidUser}
+module.exports = {UserModel,LouModel,ApplyModel,addUser,addLou,changePwd,RestroUser,InvalidUser,addApply}

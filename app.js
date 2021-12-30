@@ -240,8 +240,6 @@ app.post('/AddLou',(req,res)=>{
 })
 
 
-
-
 //学生管理页
 app.get('/admin_student.ejs',(req,res)=>{
 
@@ -302,6 +300,41 @@ app.get('/student.ejs',(req,res)=>{
         username:req.session.username
     })
 })
+
+//学生申请页面、
+app.get('/student_apply.ejs',(req,res)=>{
+    Mongoose.LouModel.find({},(err,data) =>{ //获取楼号供选择
+        // console.log(data[0]);
+        res.render('student_apply.ejs',{
+            username:req.session.username,
+            loulist:data,
+            info:null,
+        })
+    }) 
+
+    // res.render('student_apply.ejs',{
+    //     username:req.session.username,
+    //     info:null,
+    // })
+})
+
+
+//学生提交申请
+app.post('/doApply',(req,res)=>{
+    // res.send(req.body)
+    //获取数据
+    var lou = req.body.apply_lou;
+    var room = req.body.apply_room;
+    
+})
+
+
+
+
+
+
+
+
 
 
 
