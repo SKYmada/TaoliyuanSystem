@@ -21,30 +21,6 @@
 				</div></li>
 
 				
-			<li class="nav-item dropdown">
-				<%  if (username != null) { %> 
-					<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown"
-					role="button" data-toggle="dropdown" aria-haspopup="ture"
-					aria-expanded="true">
-					<%- username %>	
-					</a>
-					<c:if test="${username!=null}">
-						<div class="dropdown-menu" aria-labelledby="navbarDropdown">
-							<a class="dropdown-item" href="">我的信息</a>
-							<a class="dropdown-item" href="">修改密码</a>
-							<a class="dropdown-item" href="">登出</a>
-						</div>
-					</c:if>
-				<% } %>
-				<%  if (username == null) { %> 
-					<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown"
-					role="button" data-toggle="dropdown" aria-haspopup="true"
-					aria-expanded="false">
-					未登录	
-					</a> 
-				<% } %>
-				
-			</li>
 			
 		</ul>
 	</div>		

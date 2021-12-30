@@ -57,19 +57,21 @@ app.post('/LoginAction',(req, res)=>{
     var username = req.body.username;
     var password = req.body.password;
 
+
     Mongoose.UserModel.findOne({"username": username, "password": password}).exec((err, user) => {
         if(err) return console.log(err)
         if(!user) res.render("login.ejs", {
             info: "用户名或密码错误",
-            username: null
         })
         else {
-            req.session.username=user.username
+            // 根据权限跳转页面
+            if(user.status == 0)
             res.render("admin.ejs",{
-                username:user.username
-            
             })
-            console.log(user.status)  //获取权限
+            else
+            res.render("student.ejs",{
+            })
+             console.log(user.status)  //获取权限
         }
     })
     
@@ -78,6 +80,12 @@ app.post('/LoginAction',(req, res)=>{
 
 
 //登出
+app.get('/LogoutAction',(req,res)=>{
+    res.render('login.ejs',{
+        info:"登出成功"
+    });
+})
+
 
 // 学生注册
 app.post('/RegAction',(req,res) =>{
@@ -90,7 +98,7 @@ app.post('/RegAction',(req,res) =>{
     console.log(name,username,password,sex,major)
     Mongoose.UserModel.findOne({"username":username}).exec((err,user) =>{
         if(!user){
-            Mongoose.addUser(name, username, password, sex, major, 0, 0, 0, 1)
+            Mongoose.addUser(name, username, password, sex, major, 0, 0, 0)
             res.render("login.ejs", {
                 username:null,
                 info: "注册成功！请登录"
@@ -111,6 +119,21 @@ app.get('/admin.ejs',(req,res)=>{
     res.render('admin.ejs')
 })
 
+//学生管理页
+app.get('/admin.ejs',(req,res)=>{
+    res.render('admin.ejs')
+})
+
+
+
+
+
+
+
+//学生首页
+app.get('/student.ejs',(req,res)=>{
+    res.render('student.ejs')
+})
 
 
 

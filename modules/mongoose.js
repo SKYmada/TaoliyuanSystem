@@ -1,7 +1,7 @@
 const UserModel = require("./User")
+const LouModel = require("./Lou")
 
-
-//在user表中插入数据
+//在users表中插入数据
 function addUser(name, username, password, sex,major,role_id, lou_id, room_id,status) {
     var user = new UserModel({
         name:name,
