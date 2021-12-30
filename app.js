@@ -49,6 +49,19 @@ app.use(express.static('node_modules'));
 // }
 // app.use(filter);
 
+
+const admin = Mongoose.UserModel({name:'admin',username:'admin',password:'admin',role_id:0});
+Mongoose.UserModel.find({"username":"admin"},(err,data)=>{
+    if(err) return console.log(err);
+    console.log(data)
+    if(data.username=="admin"){
+        console.log("已存在管理员");
+    }
+    else{
+        admin.save().then(()=> console.log("已创建管理员"));
+    }
+})
+
 //欢迎界面
 app.get('/',(req,res) => {
     res.render('index.ejs')
@@ -410,8 +423,32 @@ app.post('/doApply',(req,res)=>{
 })
 
 
+//学生查看室友页面
+app.get('/student_roomate.ejs',(req,res)=>{
+    // 获取用户名
+    var username = req.session.username;
+    // 根据用户名查找申请表中在同一栋楼且已被同意的用户数据
+    Mongoose.ApplyModel.findOne({"applicant":username,"status":1},(err,data)=>{
+        if(err) return console.log(err);
+        if(!data){
+            res.render('student_roomate.ejs',{
+                username:req.session.username,
+                applylist:0,
+            })
+        }
+        else {
+            Mongoose.ApplyModel.find({"apply_lou_id":data.apply_lou_id,"apply_room_id":data.apply_room_id,"status":1} , (err,datas)=>{
+                if(err) return console.log(err);
+                res.render('student_roomate.ejs',{
+                    username:req.session.username,
+                    applylist:datas,
+                })
+            })
+        }
+        
+    })
 
-
+})
 
 
 

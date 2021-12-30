@@ -27,8 +27,9 @@ const UserSchema = {
 
 const UserModel = mongoose.model("User", UserSchema, "users")
 
-// 仅运行一次,创建管理员
-// const admin = new UserModel({name:'mjt',username:'1',password:'1',status:0});
+// // 仅运行一次,创建管理员
+// const admin = new UserModel({name:'admin',username:'admin',password:'admin',role_id:0});
+
 // admin.save().then(()=> console.log("已创建管理员"))
 
 

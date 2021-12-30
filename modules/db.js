@@ -1,6 +1,6 @@
 const mongoose = require('mongoose')
 
-mongoose.connect('mongodb://localhost/tly',(err) =>{
+mongoose.connect('mongodb://localhost/tly1',(err) =>{
     if(err){
         console.log(err);
         return;
