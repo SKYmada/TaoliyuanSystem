@@ -3,6 +3,7 @@ const Mongoose = require('./modules/mongoose.js');
 const bodyParser = require('body-parser')
 const session = require('express-session');  //保存用户信息
 const ejs = require('ejs');
+const { ConnectionStates } = require('mongoose');
 const app = express();
 
 // 解析post请求
@@ -20,7 +21,6 @@ app.use(express.static('node_modules'));
 // 配置中间件 固定格式
 app.use(session({
     secret: 'keyboard cat', 
-    username:"username",
     resave: false, 
     saveUninitialized: true, 
     cookie: {
@@ -64,30 +64,37 @@ app.post('/LoginAction',(req, res)=>{
             username: null
         })
         else {
+            req.session.username=user.username
             res.render("admin.ejs",{
                 username:user.username
+            
             })
+            console.log(user.status)  //获取权限
         }
     })
     
 
 })
 
+
+//登出
+
 // 学生注册
 app.post('/RegAction',(req,res) =>{
+
     var name = req.body.name;
     var username = req.body.username;
     var password = req.body.password;
     var sex = req.body.sex;
     var major = req.body.major;
-    Mongoose.User.findOne({"username":username}).exec((err,user) =>{
+    console.log(name,username,password,sex,major)
+    Mongoose.UserModel.findOne({"username":username}).exec((err,user) =>{
         if(!user){
             Mongoose.addUser(name, username, password, sex, major, 0, 0, 0, 1)
             res.render("login.ejs", {
                 username:null,
-                info: "注册成功！"
+                info: "注册成功！请登录"
             })
-            return next();
         }else{
             res.render("reg.ejs", {
                 username:null,
