@@ -1,9 +1,15 @@
 const mongoose = require("./db.js")
 
-//用户实体schema
+//楼层实体schema
 const LouSchema = {
-	number:Number,
+	lou_id:Number,
     name:String,
+	person_num:{
+		type:Number,
+		default:0
+	},
+	build_time:String,
+	remake:String,
 	status:{
 		type:Number,
 		default:1

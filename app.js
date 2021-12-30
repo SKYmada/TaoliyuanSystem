@@ -152,13 +152,96 @@ app.get('/admin.ejs',(req,res)=>{
         username:req.session.username
     })
 })
+
+
 //管理员楼层管理
+app.get('/list_lou.ejs',(req,res)=>{
+    Mongoose.LouModel.find({},(err,data) =>{
+        // console.log(data[0]);
+        res.render('list_lou.ejs',{
+            username:req.session.username,
+            loulist:data,
+        })
+    }) 
+})
+
+//添加楼层页面
 app.get('/admin_lou.ejs',(req,res)=>{
     res.render("admin_lou.ejs",{
         username:req.session.username,
         info:null
     })
 })
+
+//添加楼层
+app.post('/AddLou',(req,res)=>{
+    // res.send("获取到的楼层数据");
+    // console.log(req.body)
+    // var Lou = new Mongoose.LouModel({
+    //     lou_id:req.body.lou_id,
+    //     name:req.body.name,
+    //     build_time:req.body.build_time,
+    //     remake:req.body.remake,
+    // })
+    // Lou.save((err) => {
+    //     if(err) return console.log(err)
+    //     console.log("插入user成功")
+    // })
+
+    var lou = req.body;
+    Mongoose.LouModel.findOne({"lou_id":lou.lou_id,}).exec((err,datas) =>{
+        if(datas){  //查到id 该楼号存在
+            res.render("admin_lou.ejs", {
+                username:req.session.username,
+                info: "该楼号已存在！！"
+            })
+            // Mongoose.addLou(lou.lou_id, lou.name, lou.build_time,lou.remake)
+            // res.render("admin_lou.ejs", {
+            //     username:req.session.username,
+            //     info: "添加楼层成功！！"
+            // })
+        }
+        else{  //查不到id查楼名
+            Mongoose.LouModel.findOne({"name":lou.name,}).exec((err,datas)=>{
+                if(datas){  //查到楼名
+                    res.render("admin_lou.ejs", {
+                        username:req.session.username,
+                        info: "该楼名已存在！！"
+                    })
+                }
+                else{  //楼号楼名都不重复，添加楼层
+                    Mongoose.addLou(lou.lou_id, lou.name, lou.build_time,lou.remake)
+                    res.render("admin_lou.ejs", {
+                        username:req.session.username,
+                        info: "添加楼层成功！！"
+                    })
+                }
+            })
+
+
+            // if(datas.lou_id == lou.lou_id){
+            //     res.render("admin_lou.ejs", {
+            //         username:req.session.username,
+            //         info: "该楼号已存在！！"
+            //     })
+            // }
+
+            // else if(datas.name == lou.name){
+            //     res.render("admin_lou.ejs", {
+            //         username:req.session.username,
+            //         info: "该楼名已存在！！"
+            //     })
+            // }
+        }
+       
+    })
+
+
+})
+
+
+
+
 //学生管理页
 app.get('/admin_student.ejs',(req,res)=>{
 

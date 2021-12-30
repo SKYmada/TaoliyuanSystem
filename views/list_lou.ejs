@@ -1,0 +1,85 @@
+
+<!DOCTYPE html>
+
+<html>
+
+<head>
+<!-- bootstrap美化包 -->
+	<%-include('bt.ejs')%>
+</head>
+<body class="text-center"
+	style="background: url(photo/back1.jpg); background-size: 100% 100%; background-repeat: no-repeat; background-attachment: fixed">
+
+
+	<div class="container">
+		<!-- 导航栏 -->
+         <%-include('nav.ejs')%>
+
+		<div class="row" style="margin-top: 10px">
+
+			<!-- 当前左边栏显示active -->
+		<%-include("admin_left.ejs") %>	
+
+			<div class="col-lg-9">
+				<div class="card bg-dark text-black">
+
+					<!-- 列表 -->
+					<table class="table text-white">
+						<thead>
+							<tr>
+								<th scope="col">序号</th>
+								<th scope="col">楼号</th>
+								<th scope="col">楼名</th>
+								<th scope="col">入住人数</th>
+								<th scope="col">建造时间</th>
+								<th scope="col">备注</th>
+								<th scope="col">状态</th>
+							</tr>
+						</thead>
+						<tbody class="text-white">
+
+							<% for(var i = 0; i < loulist.length; i++) { %>
+								<tr>
+									<td> <%-i+1 %> </td>
+									<td> <%- loulist[i].lou_id %> </td>
+									<td> <%- loulist[i].name %> </td>
+									<td> <%- loulist[i].person_num %> </td>
+									<td> <%- loulist[i].build_time %> </td>
+									<td> <%- loulist[i].remake %> </td>
+									<td>
+										<button type="button" class="btn btn-<%- loulist[i].status=='1'?'success':'danger'%>"><%- loulist[i].status=='1'?'正常':'失效' %></button>
+									</td>
+
+									<%  if (loulist[i].status=='0') { %>
+										<td> 
+											<a type="button" class="btn btn-success"
+												href="">恢复</a>
+										</td>
+									<% } %>
+
+									<%  if (loulist[i].status=='1') { %>
+										<td> 
+											<a type="button" class="btn btn-danger"
+												href="">注销</a>
+										</td>
+									<% } %>
+
+
+								</tr>
+							<% } %>
+						</tbody>
+					</table>
+					<a type="button" class="btn btn-primary" href="admin_lou.ejs">添加楼层</a>
+
+				</div>
+			</div>
+
+
+
+		</div>
+	</div>
+</body>
+
+</html>
+
+

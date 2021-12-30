@@ -20,6 +20,21 @@ function addUser(name, username, password, sex,major,role_id, lou_id, room_id,st
     })
 }
 
+//在lous表中插入数据
+function addLou(lou_id, name, build_time, remake) {
+    var Lou = new LouModel({
+        lou_id:lou_id,
+        name:name,
+        build_time:build_time,
+        remake:remake,
+    })
+    Lou.save((err) => {
+        if(err) return console.log(err)
+        console.log("插入lou成功")
+    })
+}
+
+
 //修改密码
 function changePwd(username, password) {
     UserModel.updateOne({"username":username},{"password":password},(err) => {
@@ -50,4 +65,4 @@ function RestroUser(username){
 
 }
 
-module.exports = {UserModel,addUser,changePwd,RestroUser,InvalidUser}
+module.exports = {UserModel,LouModel,addUser,addLou,changePwd,RestroUser,InvalidUser}
