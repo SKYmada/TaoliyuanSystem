@@ -28,6 +28,25 @@ app.set('view engine','ejs');
 app.use(express.static('public'));
 app.use(express.static('node_modules'));
 
+// // 登陆拦截，未登录不能访问其他功能  //使用失败
+// let filter = (req,res,next) =>{
+//     var path = req.url;
+//     if(req.session.username == null){
+//         res.render('login.ejs',{
+//             username:null,
+//             info:"请登陆"
+//         })
+//         // if(path != "/index.ejs" && path != "/login.ejs" && path != "/reg.ejs"){
+//         //     res.render('/login.ejs',{
+//         //         username:req.session.username,
+//         //         info:"请先登陆！"
+//         //     })
+//         // }
+//         // else next();
+//     }
+//     next();
+// }
+// app.use(filter);
 
 //欢迎界面
 app.get('/',(req,res) => {
@@ -136,14 +155,19 @@ app.get('/admin_lou.ejs',(req,res)=>{
 app.get('/admin_student.ejs',(req,res)=>{
 
     Mongoose.UserModel.find({"role_id":1},(err,data) =>{
-        console.log(data[0]);
+        // console.log(data[0]);
         res.render('admin_student.ejs',{
             username:req.session.username,
             userlist:data,
         })
-    })
+    })  
+})
 
-    
+//注销、恢复用户
+app.get('/RestroUser',(req,res) =>{
+    res.send(req.url);
+    var action = req.url.split("?")
+    console.log(action)
 })
 
 

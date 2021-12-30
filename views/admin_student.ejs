@@ -50,13 +50,20 @@
 										<td>
 											<button type="button" class="btn btn-<%- userlist[i].status=='1'?'success':'danger'%>"><%- userlist[i].status=='1'?'正常':'失效' %></button>
 										</td>
-										<td><c:if test="<%- userlist[i].status=='0' %>">
-											<a type="button" class="btn btn-success"
-												href="RestroUser?id=<%- userlist[i].id%>">恢复用户</a>
-										</c:if> <c:if test="<%- userlist[i].status=='0' %>">
-											<a type="button" class="btn btn-danger"
-												href="InvalidUser?id=${user.id}">注销用户</a>
-										</c:if></td>
+
+										<%  if (userlist[i].status=='0') { %>
+											<td> 
+												<a type="button" class="btn btn-success"
+													href="RestroUser?id=<%- userlist[i].id%>">恢复用户</a>
+											</td>
+										<% } %>
+
+										<%  if (userlist[i].status=='1') { %>
+											<td> 
+												<a type="button" class="btn btn-danger"
+													href="RestroUser?id=<%- userlist[i].id%>">注销用户</a>
+											</td>
+										<% } %>
 
 
                                     </tr>
