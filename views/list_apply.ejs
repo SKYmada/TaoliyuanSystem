@@ -50,12 +50,22 @@
                                     <button type="button" class="btn btn-<%- applylist[i].status=='0'?'danger':'primary'%>"><%- applylist[i].status=='0'?'未处理':'已处理' %></button>
                                 </td>
 
-
-                                <td>
-                                    <button type="button" class="btn btn-success">同意</button>
-                                    <button type="button" class="btn btn-danger">拒绝</button>
-                                </td>
-
+                                <%  if (applylist[i].status=='0') { %>
+                                    <td>
+                                        <a type="button" class="btn btn-success" href="Argee?applicant=<%- applylist[i].applicant %>" >同意</a>
+                                        <a type="button" class="btn btn-danger" href="DisArgee?applicant=<%- applylist[i].applicant %>" >拒绝</a>
+                                    </td>
+                                <% } %>
+                                <%  if (applylist[i].status=='1') { %>
+                                    <td>   
+                                        <button type="button" class="btn btn-success">已同意</button>
+                                    </td>
+                                <% } %>
+                                <%  if (applylist[i].status=='-1') { %>
+                                    <td>   
+                                        <button type="button" class="btn btn-danger">已拒绝</button>
+                                    </td>
+                                <% } %>
 
 
                             </tr>

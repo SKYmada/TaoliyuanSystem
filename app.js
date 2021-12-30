@@ -304,6 +304,40 @@ app.get('/list_apply.ejs',(req,res) =>{
 })
 //处理申请
 
+app.get('/Argee',(req,res)=>{
+    // res.send("同意");
+    // 通过url获取申请者
+    var action = req.url.split("?");
+    var applicant = action[1].split("=")[1];
+    Mongoose.Agree(applicant);  //同意后更新数据
+    
+    // 刷新
+    Mongoose.ApplyModel.find({},(err,datas)=>{
+        if(err) return console.log(err);
+        res.render('list_apply.ejs',{
+            username:req.session.username,
+            applylist:datas
+        })
+    })
+})   
+
+app.get('/DisArgee',(req,res)=>{
+    // res.send("不同意");
+    // 通过url获取申请者
+    var action = req.url.split("?");
+    var applicant = action[1].split("=")[1];
+    Mongoose.Disagree(applicant);  //不同意
+    
+    // 刷新
+    Mongoose.ApplyModel.find({},(err,datas)=>{
+        if(err) return console.log(err);
+        res.render('list_apply.ejs',{
+            username:req.session.username,
+            applylist:datas
+        })
+    })
+})
+
 
 
 
