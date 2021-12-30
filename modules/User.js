@@ -7,9 +7,18 @@ const UserSchema = {
 	password:String,
 	sex:String,
 	major:String,
-	role_id:Number,
-	lou_id:Number,
-	room_id:Number,
+	role_id:{
+		type:Number,
+		default:0
+	},
+	lou_id:{
+		type:Number,
+		default:0
+	},
+	room_id:{
+		type:Number,
+		default:0
+	},
 	status:{
 		type:Number,
 		default:1

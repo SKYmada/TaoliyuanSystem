@@ -5,6 +5,16 @@ const session = require('express-session');  //保存用户信息
 const ejs = require('ejs');
 const { ConnectionStates } = require('mongoose');
 const app = express();
+// 配置中间件 固定格式
+app.use(session({
+    secret: 'keyboard cat', 
+    resave: false, 
+    saveUninitialized: true, 
+    cookie: {
+        maxAge: 1000 * 60 * 15
+    },
+    rolling: true
+}))
 
 // 解析post请求
 app.use(express.json()) // for parsing application/json
@@ -18,16 +28,6 @@ app.set('view engine','ejs');
 app.use(express.static('public'));
 app.use(express.static('node_modules'));
 
-// 配置中间件 固定格式
-app.use(session({
-    secret: 'keyboard cat', 
-    resave: false, 
-    saveUninitialized: true, 
-    cookie: {
-        maxAge: 1000 * 60 * 15
-    },
-    rolling: true
-}))
 
 //欢迎界面
 app.get('/',(req,res) => {
@@ -56,22 +56,25 @@ app.get('/reg.ejs',(req,res) => {
 app.post('/LoginAction',(req, res)=>{
     var username = req.body.username;
     var password = req.body.password;
-
-
+    req.session.username=username;
+    
     Mongoose.UserModel.findOne({"username": username, "password": password}).exec((err, user) => {
         if(err) return console.log(err)
         if(!user) res.render("login.ejs", {
             info: "用户名或密码错误",
+            username:null
         })
         else {
             // 根据权限跳转页面
             if(user.status == 0)
             res.render("admin.ejs",{
+                username:req.session.username
             })
             else
             res.render("student.ejs",{
+                username:req.session.username
             })
-             console.log(user.status)  //获取权限
+            //  console.log(user.status)  //获取权限
         }
     })
     
@@ -81,7 +84,9 @@ app.post('/LoginAction',(req, res)=>{
 
 //登出
 app.get('/LogoutAction',(req,res)=>{
+    req.session.username = null
     res.render('login.ejs',{
+        username:null,
         info:"登出成功"
     });
 })
@@ -95,10 +100,10 @@ app.post('/RegAction',(req,res) =>{
     var password = req.body.password;
     var sex = req.body.sex;
     var major = req.body.major;
-    console.log(name,username,password,sex,major)
+    // console.log(name,username,password,sex,major)
     Mongoose.UserModel.findOne({"username":username}).exec((err,user) =>{
         if(!user){
-            Mongoose.addUser(name, username, password, sex, major, 0, 0, 0)
+            Mongoose.addUser(name, username, password, sex, major)
             res.render("login.ejs", {
                 username:null,
                 info: "注册成功！请登录"
@@ -116,13 +121,17 @@ app.post('/RegAction',(req,res) =>{
 
 //管理员首页
 app.get('/admin.ejs',(req,res)=>{
-    res.render('admin.ejs')
+    res.render("admin.ejs",{
+        username:req.session.username
+    })
 })
 
-//学生管理页
-app.get('/admin.ejs',(req,res)=>{
-    res.render('admin.ejs')
-})
+// //学生管理页
+// app.get('/admin.ejs',(req,res)=>{
+//     res.render('admin.ejs',{
+//         username:req.session.username
+//     })
+// })
 
 
 
@@ -132,12 +141,62 @@ app.get('/admin.ejs',(req,res)=>{
 
 //学生首页
 app.get('/student.ejs',(req,res)=>{
-    res.render('student.ejs')
+    res.render('student.ejs',{
+        username:req.session.username
+    })
 })
 
 
 
 
+//修改密码页面
+app.get('/changePwd.ejs',(req,res) =>{
+    res.render('changePwd.ejs',{
+        username:req.session.username,
+        info:null
+    })
+})
+// 修改密码
+app.post('/changePwd',(req,res) => {
+    var username = req.session.username;
+    var newPwd1 = req.body.newPwd1;
+    var newPwd2 = req.body.newPwd2;
+    // console.log(oldPwd)
+    // console.log(newPwd)
+    // console.log(req.session.username)
+    if(newPwd1 == newPwd2){
+        Mongoose.UserModel.findOne({"username":username}, (err,data) => {
+            if(err) return handleError(err);
+            // console.log(data.username)
+            // console.log(data.password)
+            if(data.password == newPwd1){
+                res.render('changePwd.ejs',{
+                    username:req.session.username,
+                    info:"新密码不能与旧密码相同！"
+                })
+            }
+    
+            else {
+                Mongoose.changePwd(username,newPwd1);
+                req.session.username =null;
+                res.render('login.ejs',{
+                    username:req.session.username,
+                    info:"修改成功，请重新登陆！！"
+                })
+            }
+        })
+    }
+    else{
+        res.render('changePwd.ejs',{
+            username:username,
+            info:"两次输入的密码不一致！！"
+        })
+    }
+
+    
+        
+    
+})
 
 app.listen(10317, (req,res) =>{
     console.log("服务器已启动")

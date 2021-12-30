@@ -20,5 +20,13 @@ function addUser(name, username, password, sex,major,role_id, lou_id, room_id,st
     })
 }
 
+//修改密码
+function changePwd(username, password) {
+    UserModel.updateOne({"username":username},{"password":password},(err) => {
+        if(err) return console.log(err)
+        console.log("修改密码成功！")
+    })
+}
 
-module.exports = {UserModel,addUser}
+
+module.exports = {UserModel,addUser,changePwd}
