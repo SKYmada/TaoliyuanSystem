@@ -29,4 +29,25 @@ function changePwd(username, password) {
 }
 
 
-module.exports = {UserModel,addUser,changePwd}
+// 注销用户  根据用户id
+function InvalidUser(username){
+    UserModel.updateOne({"username":username},{"status":0},(err) =>{
+        if(err) return console.log(err)
+        console.log("注销成功！")
+    })
+
+    // UserModel.findOne({"id":id}, (err,data)=>{
+    //     console.log("查询的id"+data.id)
+    // })
+}
+
+// 恢复用户
+function RestroUser(username){
+    UserModel.updateOne({"username":username},{"status":1},(err) =>{
+        if(err) return console.log(err)
+        console.log("恢复成功！")
+    })
+
+}
+
+module.exports = {UserModel,addUser,changePwd,RestroUser,InvalidUser}

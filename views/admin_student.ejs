@@ -54,14 +54,14 @@
 										<%  if (userlist[i].status=='0') { %>
 											<td> 
 												<a type="button" class="btn btn-success"
-													href="RestroUser?id=<%- userlist[i].id%>">恢复用户</a>
+													href="RestroUser?username=<%- userlist[i].username%>">恢复用户</a>
 											</td>
 										<% } %>
 
 										<%  if (userlist[i].status=='1') { %>
 											<td> 
 												<a type="button" class="btn btn-danger"
-													href="RestroUser?id=<%- userlist[i].id%>">注销用户</a>
+													href="InvalidUser?username=<%- userlist[i].username%>">注销用户</a>
 											</td>
 										<% } %>
 

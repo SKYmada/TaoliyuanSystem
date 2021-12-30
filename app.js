@@ -89,10 +89,18 @@ app.post('/LoginAction',(req, res)=>{
             res.render("admin.ejs",{
                 username:req.session.username
             })
-            else
-            res.render("student.ejs",{
-                username:req.session.username
-            })
+            else{
+                if(user.status ==0){
+                    res.render("login.ejs", {
+                        info: "该用户已失效",
+                        username:null
+                    })
+                }else{
+                    res.render("student.ejs",{
+                        username:req.session.username
+                    })
+                }
+            }
             //  console.log(user.status)  //获取权限
         }
     })
@@ -165,9 +173,38 @@ app.get('/admin_student.ejs',(req,res)=>{
 
 //注销、恢复用户
 app.get('/RestroUser',(req,res) =>{
-    res.send(req.url);
-    var action = req.url.split("?")
-    console.log(action)
+    // res.send(req.url);
+    // 通过url获取用户用户名
+    var action = req.url.split("?");
+    var username = action[1].split("=")[1];
+    // console.log(action);
+    console.log("获取的username"+username);
+    Mongoose.RestroUser(username);
+    Mongoose.UserModel.find({"role_id":1},(err,data) =>{
+        // console.log(data[0]);
+        res.render('admin_student.ejs',{
+            username:req.session.username,
+            userlist:data,
+        })
+    })  
+})
+
+app.get('/InvalidUser',(req,res) =>{
+    // res.send(req.url);
+    // 通过url获取用户id
+    var action = req.url.split("?");
+    var username = action[1].split("=")[1];
+    // console.log(action);
+    console.log("获取的username"+username);
+    Mongoose.InvalidUser(username);
+
+    Mongoose.UserModel.find({"role_id":1},(err,data) =>{  //注销后刷新列表
+        // console.log(data[0]);
+        res.render('admin_student.ejs',{
+            username:req.session.username,
+            userlist:data,
+        })
+    })  
 })
 
 
