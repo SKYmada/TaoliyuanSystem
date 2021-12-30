@@ -9,7 +9,7 @@ const UserSchema = {
 	major:String,
 	role_id:{
 		type:Number,
-		default:0
+		default:1
 	},
 	lou_id:{
 		type:Number,

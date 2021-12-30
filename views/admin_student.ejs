@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+<!-- bootstrap美化包 -->
+	<%-include('bt.ejs')%>
+</head>
+<body class="text-center" style="background: url(photo/back1.jpg); background-size: 100% 100%;background-repeat: no-repeat; background-attachment: fixed">
+
+
+		<div class="container">
+			<!-- 导航栏 -->
+         <%-include('nav.ejs')%>
+
+			<div class="row" style="margin-top: 10px">
+
+				<!-- 当前左边栏显示active -->
+		<%-include("admin_left.ejs") %>		
+
+				<div class="col-lg-9">
+					<div class="card bg-dark text-black">
+
+						<!-- 列表 -->
+						<table class="table">
+							<thead>
+								<tr>
+									<th scope="col">序号</th>
+									<th scope="col">姓名</th>
+									<th scope="col">用户名</th>
+									<th scope="col">性别</th>
+									<th scope="col">专业</th>
+									<th scope="col">寝室楼号</th>
+									<th scope="col">寝室号</th>
+									<th scope="col">状态</th>
+									<th scope="col">操作</th>
+								</tr>
+							</thead>
+							<tbody class="text-white">
+
+                                <% for(var i = 0; i < userlist.length; i++) { %>
+                                    <tr>
+                                        <td> <%-i+1 %> </td>
+                                        <td> <%- userlist[i].name %> </td>
+                                        <td> <%- userlist[i].username %> </td>
+                                        <td> <%- userlist[i].sex %> </td>
+                                        <td> <%- userlist[i].major %> </td>
+                                        <td> <%- userlist[i].lou_id == 0 ? '待入住':'userlist[i].lou_id' %> </td>
+                                        <td> <%- userlist[i].room_id == 0 ? '待入住':'userlist[i].room_id' %> </td>
+										<td><button type="button"
+												class="btn btn-<%- userlist[i].status=='1'?'success':'danger'%>"><%- userlist[i].status=='1'?'正常':'失效' %></button></td>
+                                    </tr>
+                                <% } %>
+						</table>
+					</div>
+				</div>
+
+
+
+			</div>
+		</div>
+</body>
+
+</html>

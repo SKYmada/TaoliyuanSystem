@@ -66,7 +66,7 @@ app.post('/LoginAction',(req, res)=>{
         })
         else {
             // 根据权限跳转页面
-            if(user.status == 0)
+            if(user.role_id == 0)
             res.render("admin.ejs",{
                 username:req.session.username
             })
@@ -125,13 +125,26 @@ app.get('/admin.ejs',(req,res)=>{
         username:req.session.username
     })
 })
+//管理员楼层管理
+app.get('/admin_lou.ejs',(req,res)=>{
+    res.render("admin_lou.ejs",{
+        username:req.session.username,
+        info:null
+    })
+})
+//学生管理页
+app.get('/admin_student.ejs',(req,res)=>{
 
-// //学生管理页
-// app.get('/admin.ejs',(req,res)=>{
-//     res.render('admin.ejs',{
-//         username:req.session.username
-//     })
-// })
+    Mongoose.UserModel.find({"role_id":1},(err,data) =>{
+        console.log(data[0]);
+        res.render('admin_student.ejs',{
+            username:req.session.username,
+            userlist:data,
+        })
+    })
+
+    
+})
 
 
 

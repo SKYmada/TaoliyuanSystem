@@ -2,10 +2,8 @@ const mongoose = require("./db.js")
 
 //用户实体schema
 const LouSchema = {
+	number:Number,
     name:String,
-	role_id:Number,
-	lou_id:Number,
-	room_id:Number,
 	status:{
 		type:Number,
 		default:1
