@@ -1,5 +1,6 @@
 const express = require('express');
 const Mongoose = require('./modules/mongoose.js');
+const bodyParser = require('body-parser')
 const session = require('express-session');  //保存用户信息
 const ejs = require('ejs');
 const app = express();
@@ -55,7 +56,8 @@ app.get('/reg.ejs',(req,res) => {
 app.post('/LoginAction',(req, res)=>{
     var username = req.body.username;
     var password = req.body.password;
-    Mongoose.User.findOne({"username": username, "password": password}).exec((err, user) => {
+
+    Mongoose.UserModel.findOne({"username": username, "password": password}).exec((err, user) => {
         if(err) return console.log(err)
         if(!user) res.render("login.ejs", {
             info: "用户名或密码错误",
@@ -68,6 +70,7 @@ app.post('/LoginAction',(req, res)=>{
         }
     })
     
+
 })
 
 // 学生注册

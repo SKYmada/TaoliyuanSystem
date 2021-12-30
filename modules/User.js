@@ -10,14 +10,17 @@ const UserSchema = {
 	role_id:Number,
 	lou_id:Number,
 	room_id:Number,
-	status:Number
+	status:{
+		type:Number,
+		default:1
+	}
 }
 
-const User = mongoose.model("User", UserSchema, "users")
+const UserModel = mongoose.model("User", UserSchema, "users")
 
-//仅运行一次,创建管理员
-// const admin = new User({name:'mjt',username:'admin',password:'admin',status:0});
+// 仅运行一次,创建管理员
+// const admin = new UserModel({name:'mjt',username:'1',password:'1',status:0});
 // admin.save().then(()=> console.log("已创建管理员"))
 
 
-module.exports = User
+module.exports = UserModel;

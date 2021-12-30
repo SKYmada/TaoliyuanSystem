@@ -1,9 +1,9 @@
-const User = require("./User")
+const UserModel = require("./User")
 
 
 //在user表中插入数据
 function addUser(name, username, password, sex,major,role_id, lou_id, room_id,status) {
-    var user = new User({
+    var user = new UserModel({
         name:name,
         username:username,
         password:password,
@@ -20,4 +20,5 @@ function addUser(name, username, password, sex,major,role_id, lou_id, room_id,st
     })
 }
 
-module.exports = {User,addUser}
+
+module.exports = {UserModel,addUser}
