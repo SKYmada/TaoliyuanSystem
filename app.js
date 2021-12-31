@@ -1,10 +1,9 @@
-const express = require('express');
-const Mongoose = require('./modules/mongoose.js');
-const bodyParser = require('body-parser')
+const express = require('express');  //前端框架
+const Mongoose = require('./modules/mongoose.js'); //数据库操作封装
+const bodyParser = require('body-parser')   //处理post提交的数据
 const sd = require('silly-datetime');  //获取格式化日期
 const session = require('express-session');  //保存用户信息
-const ejs = require('ejs');
-const { ConnectionStates } = require('mongoose');
+const ejs = require('ejs');  //渲染前端页面
 const app = express();
 // 配置中间件 固定格式
 app.use(session({
