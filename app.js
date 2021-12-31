@@ -52,13 +52,19 @@ app.use(express.static('node_modules'));
 const admin = Mongoose.UserModel({name:'admin',username:'admin',password:'admin',role_id:0});
 Mongoose.UserModel.find({"username":"admin"},(err,data)=>{
     if(err) return console.log(err);
-    console.log(data)
-    if(data.username=="admin"){
+    if(data.length>0){
+        console.log(data);
         console.log("已存在管理员");
     }
     else{
         admin.save().then(()=> console.log("已创建管理员"));
     }
+    // if(data.username=="admin"){
+    //     console.log("已存在管理员");
+    // }
+    // else{
+        // admin.save().then(()=> console.log("已创建管理员"));
+    // }
 })
 
 //欢迎界面
