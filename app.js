@@ -511,6 +511,6 @@ app.post('/changePwd',(req,res) => {
     
 })
 
-app.listen(10317, (req,res) =>{
+app.listen(20317, (req,res) =>{
     console.log("服务器已启动")
 })

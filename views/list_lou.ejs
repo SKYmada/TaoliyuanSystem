@@ -50,21 +50,6 @@
 										<button type="button" class="btn btn-<%- loulist[i].status=='1'?'success':'danger'%>"><%- loulist[i].status=='1'?'正常':'失效' %></button>
 									</td>
 
-									<%  if (loulist[i].status=='0') { %>
-										<td> 
-											<a type="button" class="btn btn-success"
-												href="">恢复</a>
-										</td>
-									<% } %>
-
-									<%  if (loulist[i].status=='1') { %>
-										<td> 
-											<a type="button" class="btn btn-danger"
-												href="">注销</a>
-										</td>
-									<% } %>
-
-
 								</tr>
 							<% } %>
 						</tbody>
